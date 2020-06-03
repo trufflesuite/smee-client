@@ -27,11 +27,12 @@ class Client {
     const req = superagent.post(target).send(data.body)
 
     delete data.body
+    delete data['content-length'] // https://github.com/probot/smee-client/pull/122
 
     Object.keys(data).forEach(key => {
       req.set(key, data[key])
     })
-
+    
     req.end((err, res) => {
       if (err) {
         this.logger.error(err)
