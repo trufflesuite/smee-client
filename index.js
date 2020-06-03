@@ -27,14 +27,11 @@ class Client {
     const req = superagent.post(target).send(data.body)
 
     delete data.body
+    delete data['content-length'] // https://github.com/probot/smee-client/pull/122
 
     Object.keys(data).forEach(key => {
       req.set(key, data[key])
     })
-
-    const contentLength = req.get("content-length");
-    const newContentLength = parseInt(contentLength) + 8; // No idea why it's 8
-    req.set('content-length', `${newContentLength}`)
     
     req.end((err, res) => {
       if (err) {
