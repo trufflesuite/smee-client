@@ -32,6 +32,10 @@ class Client {
       req.set(key, data[key])
     })
 
+    const contentLength = req.get("content-length");
+    const newContentLength = parseInt(contentLength) + 8; // No idea why it's 8
+    req.set('content-length', `${newContentLength}`)
+    
     req.end((err, res) => {
       if (err) {
         this.logger.error(err)
